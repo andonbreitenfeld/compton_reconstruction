@@ -1,0 +1,19 @@
+# QoS overrides for `ros2 bag record --qos-profile-overrides-path`.
+#
+# The M400 driver publishes /m400/gamma_event_packet with:
+#   reliability:  reliable
+#   durability:   transient_local
+#   history:      keep_last
+#   depth:        200
+# (m400_main_driver.cpp:93-96)
+#
+# rosbag2's default subscription QoS is reliable + volatile + keep_last(10),
+# which mismatches durability and drops events queued by the publisher's
+# transient_local cache. Override here so the recording subscription matches
+# the publisher exactly.
+
+/m400/gamma_event_packet:
+  reliability: reliable
+  durability: transient_local
+  history: keep_last
+  depth: 200
