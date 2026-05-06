@@ -18,7 +18,6 @@ REQUIRED_TOPICS = [
     "/m400/gamma_event_packet",
     "/tf",
     "/tf_static",
-    "/spot_driver/joint_states",
 ]
 
 

@@ -27,7 +27,8 @@ ros2 run compton_reconstruction replay_bag <bag> [--inspect-only] [--rate R] [--
 - `/m400/gamma_event_packet`
 - `/tf`
 - `/tf_static`
-- `/spot_driver/joint_states`
+
+The detector is body-mounted, so `base_link → m400_crystal_array` is a static transform; no joint angles affect the detector's pose. `/tf` and `/tf_static` together carry every transform reconstruction needs (`spot_nav/map → odom → base_link → m400_crystal_array`).
 
 `replay_bag` checks every required topic is present (via `rosbag2_py.Info`) before playing; refuses to play with required topics missing unless `--allow-missing` is passed.
 
