@@ -1,21 +1,24 @@
-"""Curated topic sets for bag record and replay sanity checks.
+"""Loads the curated topic set from config/topics.yaml.
 
-Centralizing this list keeps record_bag.py and replay_bag.py in lockstep:
-adding a new topic in one place is enough.
+Single source of truth for both record_bag and replay_bag. Editing
+config/topics.yaml is the supported way to change the survey topic set.
 """
 
-REQUIRED_TOPICS = [
-    "/m400/gamma_event_packet",
-    "/tf",
-    "/tf_static",
-    "/spot_driver/joint_states",
-]
+import os
 
-OPTIONAL_TOPICS = [
-    "/m400/compton_image/compressed",
-    "/odom",
-    "/vision",
-    "/spot/odometry",
-]
+import yaml
+from ament_index_python.packages import get_package_share_directory
 
-ALL_TOPICS = REQUIRED_TOPICS + OPTIONAL_TOPICS
+
+def _load_required_topics() -> list[str]:
+    cfg = os.path.join(
+        get_package_share_directory("compton_reconstruction"),
+        "config",
+        "topics.yaml",
+    )
+    with open(cfg) as f:
+        data = yaml.safe_load(f)
+    return list(data["required_topics"])
+
+
+REQUIRED_TOPICS = _load_required_topics()

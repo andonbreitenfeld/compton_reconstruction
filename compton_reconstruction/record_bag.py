@@ -17,11 +17,7 @@ from datetime import datetime
 
 from ament_index_python.packages import get_package_share_directory
 
-from compton_reconstruction.topics import (
-    ALL_TOPICS,
-    OPTIONAL_TOPICS,
-    REQUIRED_TOPICS,
-)
+from compton_reconstruction.topics import REQUIRED_TOPICS
 
 
 def _qos_overrides_path() -> str:
@@ -56,10 +52,6 @@ def main(argv: list[str] | None = None) -> int:
         help="Auto-stop after N seconds. 0 = run until SIGINT.",
     )
     parser.add_argument(
-        "--include-extra", action="store_true",
-        help=f"Also record optional topics: {OPTIONAL_TOPICS}",
-    )
-    parser.add_argument(
         "--topic", action="append", default=[],
         help="Additional topic to record (repeatable).",
     )
@@ -90,18 +82,14 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: output path already exists: {output}", file=sys.stderr)
         return 1
 
-    topics = list(REQUIRED_TOPICS)
-    if args.include_extra:
-        topics += OPTIONAL_TOPICS
-    topics += args.topic
+    topics = list(REQUIRED_TOPICS) + args.topic
 
     qos_overrides = None if args.no_qos_overrides else _qos_overrides_path()
     cmd = _build_command(output, topics, qos_overrides)
 
     print("Recording topics:")
     for t in topics:
-        marker = "  " if t in REQUIRED_TOPICS else "* "
-        print(f"  {marker}{t}")
+        print(f"  {t}")
     print(f"Output: {output}")
     if qos_overrides:
         print(f"QoS overrides: {qos_overrides}")

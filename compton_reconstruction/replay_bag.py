@@ -11,7 +11,7 @@ import shutil
 import subprocess
 import sys
 
-from compton_reconstruction.topics import OPTIONAL_TOPICS, REQUIRED_TOPICS
+from compton_reconstruction.topics import REQUIRED_TOPICS
 
 
 def _check_m400_interfaces_sourced() -> bool:
@@ -55,12 +55,7 @@ def _print_report(found: list[tuple[str, str, int]]) -> bool:
             ok = False
         c = counts.get(t, 0)
         print(f"{t:40s}  {c:>8d}   {status}")
-    for t in OPTIONAL_TOPICS:
-        present = t in found_topics
-        status = "OK" if present else "absent (optional)"
-        c = counts.get(t, 0)
-        print(f"{t:40s}  {c:>8d}   {status}")
-    extras = found_topics - set(REQUIRED_TOPICS) - set(OPTIONAL_TOPICS)
+    extras = found_topics - set(REQUIRED_TOPICS)
     if extras:
         print("-" * 70)
         print("Other topics in bag:")

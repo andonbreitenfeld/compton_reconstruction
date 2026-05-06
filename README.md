@@ -51,14 +51,15 @@ ros2 run compton_reconstruction replay_bag <bag_path> [options]
 
 `record_bag` wraps `ros2 bag record` and applies the QoS overrides in `config/qos_overrides.yaml` so the recorder's subscription matches the driver's `transient_local + reliable + keep_last(200)` publisher.
 
-Default recorded topics (`compton_reconstruction/topics.py`):
+The recorded topic set is defined in **`config/topics.yaml`** — the single source of truth for both record and replay. Edit that file to add or remove topics; nothing else needs to change.
 
-| Required                          | Optional (`--include-extra`)        |
-|-----------------------------------|-------------------------------------|
-| `/m400/gamma_event_packet`        | `/m400/compton_image/compressed`    |
-| `/tf`                             | `/odom`                             |
-| `/tf_static`                      | `/vision`                           |
-| `/spot_driver/joint_states`       | `/spot/odometry`                    |
+Currently:
+- `/m400/gamma_event_packet`
+- `/tf`
+- `/tf_static`
+- `/spot_driver/joint_states`
+
+Add ad-hoc topics for a one-off capture with `--topic /foo` (repeatable).
 
 The Octomap is **not** bagged — `lab_april_2026.ot` is a single map reused across all testing and is loaded directly from disk in Phase 7.
 
@@ -74,7 +75,7 @@ For initial validation (Phase 2 TF audit + Phase 4 reconstruction), capture two 
    ```
 2. **Roving capture** (~2 min) — Spot walks a 2 m × 2 m square around the same source. Used to validate multi-view fusion (Phase 5).
    ```bash
-   ros2 run compton_reconstruction record_bag -o cs137_roving --duration 120 --include-extra
+   ros2 run compton_reconstruction record_bag -o cs137_roving --duration 120
    ```
 
 Inspect a bag without playing it:

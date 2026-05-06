@@ -9,9 +9,12 @@ import os
 from compton_reconstruction import record_bag, replay_bag, topics
 
 
-def test_topics_disjoint():
-    assert set(topics.REQUIRED_TOPICS).isdisjoint(topics.OPTIONAL_TOPICS)
+def test_topics_loaded_from_yaml():
     assert "/m400/gamma_event_packet" in topics.REQUIRED_TOPICS
+    assert "/tf" in topics.REQUIRED_TOPICS
+    assert "/tf_static" in topics.REQUIRED_TOPICS
+    assert "/spot_driver/joint_states" in topics.REQUIRED_TOPICS
+    assert all(t.startswith("/") for t in topics.REQUIRED_TOPICS)
 
 
 def test_qos_overrides_installed():

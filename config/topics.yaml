@@ -1,0 +1,14 @@
+# Curated topic set for Compton survey bags.
+#
+# Loaded at runtime by compton_reconstruction.topics. Used by both
+# record_bag (to choose what to capture) and replay_bag (to verify the
+# bag has what reconstruction needs).
+#
+# Editing this file is the supported way to add or remove a topic from
+# the survey set; nothing else needs to change.
+
+required_topics:
+  - /m400/gamma_event_packet
+  - /tf
+  - /tf_static
+  - /spot_driver/joint_states
